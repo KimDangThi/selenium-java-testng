@@ -1,12 +1,9 @@
 package webdriver;
 
-import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -29,66 +26,65 @@ public class Topic_05_Web_Browser {
 		driver = new FirefoxDriver();
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
-		driver.get("https://www.facebook.com/");
 	}
 	
 	@Test
-	public void TC_01_() {
-		// Các hàm đóng
+	public void TC_01_Verify_URL() {	
+		driver.get("http://live.techpanda.org/");
 		
-		driver.close();
-		driver.quit();    
+		driver.findElement(By.cssSelector("div.footer a[title='My Account']")).click();
+		sleepInSecond (3);
 		
-		// Tìm element
+		Assert.assertEquals(driver.getCurrentUrl(), "http://live.techpanda.org/index.php/customer/account/login/");
 		
-		// có thể sd luôn ==== dùng dấu chấm+ action
-		//có thể gán cho nó 1 biến để sd sau/sd nhiều lần ==== Bắt đầu bằng WebElement + tên biến
-		// Nếu tìm nhiều element thì gán = List<WebElement> + tên biến số nhiều
-		WebElement emailTextbox = driver.findElement(By.xpath("//input[@id='email']"));
-		List<WebElement> checkboxes = driver.findElements(By.xpath(osName));
+		driver.findElement(By.cssSelector("a[title='Create an Account']")).click();
+		sleepInSecond (3);
 		
-		//Mở ra/lấy ra dữ liệu/url...
-		//Có nhiều hàm GET để lấy dữ liệu ra======Trừ hàm get ko có j đằng sau, tất cả đều trả về dữ liệu
-		driver.get("https://www.facebook.com/");
-		
-		// trả về URL của page hiện tại
-		String VietnamepageURL =  driver.getCurrentUrl();
-		
-		// trả về source code HTML của page hiện tại === Dùng để Verify tương đối
-		driver.getPageSource()
-		
-		Assert.assertTrue(driver.getPageSource().contains("Kim"));
-		
-		//trả về title của page hiện tại
-		// xem trực tiếp trên Web bằng cách vào tab: Console tìm document.title
-		driver.getTitle()
-		
-		//Lấy ra được ID của Window/Tab mà driver đang đứng (active), số nhiều thì lấy all windown
-		String loginWindowID = driver.getWindowHandle();
-		Set<String> all =driver.getWindowHandles();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		Assert.assertEquals(driver.getCurrentUrl(), "http://live.techpanda.org/index.php/customer/account/create/");
 	}
 	
-
 	@Test
-	public void TC_02_() {
+	public void TC_02_Verify_Title() {
+		driver.get("http://live.techpanda.org/");
+		
+		driver.findElement(By.cssSelector("div.footer a[title='My Account']")).click();
+		sleepInSecond (3);
+		
+		Assert.assertEquals(driver.getTitle(), "Customer Login");
+		
+		driver.findElement(By.cssSelector("a[title='Create an Account']")).click();
+		sleepInSecond (3);
+		
+		Assert.assertEquals(driver.getTitle(), "Create New Customer Account");
+	}
+	
+	@Test
+	public void TC_03_Navigate() {
+		driver.get("http://live.techpanda.org/");
+		
+		driver.findElement(By.cssSelector("div.footer a[title='My Account']")).click();
+		
+		driver.findElement(By.cssSelector("a[title='Create an Account']")).click();
+		sleepInSecond (3);
+		
+		Assert.assertEquals(driver.getCurrentUrl(), "http://live.techpanda.org/index.php/customer/account/create/");
+		
+		driver.
+		
+		
+		
 		
 	}
-
-	@Test
-	public void TC_03_() {
+	public void sleepInSecond(long timeInSecond) {
+		try {
+			Thread.sleep(timeInSecond * 1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
-
 	@AfterClass
 	public void afterClass() {
 		driver.quit();
