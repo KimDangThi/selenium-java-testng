@@ -63,18 +63,45 @@ public class Topic_05_Web_Browser {
 		driver.get("http://live.techpanda.org/");
 		
 		driver.findElement(By.cssSelector("div.footer a[title='My Account']")).click();
+		sleepInSecond (3);
 		
 		driver.findElement(By.cssSelector("a[title='Create an Account']")).click();
 		sleepInSecond (3);
 		
 		Assert.assertEquals(driver.getCurrentUrl(), "http://live.techpanda.org/index.php/customer/account/create/");
 		
-		driver.
+		driver.navigate().back();
+		sleepInSecond (3);
 		
+		Assert.assertEquals(driver.getCurrentUrl(), "http://live.techpanda.org/index.php/customer/account/login/");
 		
+		driver.navigate().forward();
 		
+		Assert.assertEquals(driver.getTitle(),"Create New Customer Account");
 		
 	}
+	
+	@Test
+	public void TC_04_Get_page_source_code() {
+		driver.get("http://live.techpanda.org/");
+		
+		driver.findElement(By.cssSelector("div.footer a[title='My Account']")).click();
+		sleepInSecond (3);
+		
+		
+		//Verify page source có chứa đoạn text mong muốn không
+		Assert.assertTrue(driver.getPageSource().contains("Login or Create an Account"));
+		
+		driver.findElement(By.cssSelector("a[title='Create an Account']")).click();
+		sleepInSecond (3);
+		
+		Assert.assertTrue(driver.getPageSource().contains("Create an Account"));
+		
+	}
+	
+	
+	
+	
 	public void sleepInSecond(long timeInSecond) {
 		try {
 			Thread.sleep(timeInSecond * 1000);
