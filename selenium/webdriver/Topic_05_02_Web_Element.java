@@ -1,5 +1,6 @@
 package webdriver;
 
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
@@ -22,6 +23,7 @@ public class Topic_05_02_Web_Element {
 	By Edu = By.id("edu");
 	By Age = By.id("under_18");
 	By User5 = By.xpath("//h5[text()='Name: User5']");
+	By java =By.id("java");
 	
 	@BeforeClass
 	public void beforeClass() {
@@ -102,16 +104,146 @@ public class Topic_05_02_Web_Element {
 			} else {
 			System.out.println("Job2 is disabled");
 		}
+		
+		if(driver.findElement(By.id("development")).isEnabled()) {
+			System.out.println("Interests (Development) Checkbox is Enabled");
+			} else {
+			System.out.println("Interests (Development) Checkbox is disabled");
+		}
+		
+		if(driver.findElement(By.id("slider-1")).isEnabled()) {
+			System.out.println("Slider 01 is Enabled");
+			} else {
+			System.out.println("Slider 01 is disabled");
+		}
+		
+		if(driver.findElement(By.id("disable_password")).isEnabled()) {
+			System.out.println("Password is Enabled");
+			} else {
+			System.out.println("Password is disabled");
+		}
+		
+		if(driver.findElement(By.id("radio-disabled")).isEnabled()) {
+			System.out.println("Age Radio button is Enabled");
+			} else {
+			System.out.println("Age Radio button is disabled");
+		}
+		
+		if(driver.findElement(By.id("bio")).isEnabled()) {
+			System.out.println("Biography is Enabled");
+			} else {
+			System.out.println("Biography is disabled");
+		}
+		
+		
+		if(driver.findElement(By.id("job3")).isEnabled()) {
+			System.out.println("Job3 is Enabled");
+			} else {
+			System.out.println("Job3 is disabled");
+		}
+		
+		if(driver.findElement(By.id("check-disbaled")).isEnabled()) {
+			System.out.println("Interests checkbox3 is Enabled");
+			} else {
+			System.out.println("Interests checkbox3 is disabled");
+		}
+		
+		if(driver.findElement(By.id("slider-2")).isEnabled()) {
+			System.out.println("Slider 02 is Enabled");
+			} else {
+			System.out.println("Slider 02 is disabled");
+		}
 	}
 		
 	
 	@Test
 	public void TC_03_Select() {
+		driver.get("https://automationfc.github.io/basic-form/index.html");
 		
+		driver.findElement(Age).click();
+		driver.findElement(java).click();
+		sleepInSecond(3);
+		
+		Assert.assertTrue(driver.findElement(Age).isSelected());
+		Assert.assertTrue(driver.findElement(java).isSelected());
+		
+		driver.findElement(java).click();
+		Assert.assertFalse(driver.findElement(java).isSelected());
 	}
 	
 	@Test
-	public void TC_04_Register_function() {
+	public void TC_04_Register_Mailchimp() {
+		driver.get("https://login.mailchimp.com/signup/");
+		
+		driver.findElement(By.id("email")).sendKeys("hahahaokiwu@gmail.com");
+		
+		By PasswordTC4 =By.id("new_password");
+		
+		driver.findElement(PasswordTC4).sendKeys("abc");
+		sleepInSecond(3);
+		
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='lowercase-char completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='uppercase-char not-completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='number-char not-completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='special-char not-completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='8-char not-completed']")).isDisplayed());
+
+		
+		driver.findElement(PasswordTC4).clear();
+		driver.findElement(PasswordTC4).sendKeys("ABC");
+		sleepInSecond(3);
+		
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='lowercase-char not-completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='uppercase-char completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='number-char not-completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='special-char not-completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='8-char not-completed']")).isDisplayed());
+		
+		
+		driver.findElement(PasswordTC4).clear();
+		driver.findElement(PasswordTC4).sendKeys("123");
+		sleepInSecond(3);
+		
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='lowercase-char not-completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='uppercase-char not-completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='number-char completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='special-char not-completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='8-char not-completed']")).isDisplayed());
+
+		
+		
+		driver.findElement(PasswordTC4).clear();
+		driver.findElement(PasswordTC4).sendKeys("%$$");
+		sleepInSecond(3);
+		
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='lowercase-char not-completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='uppercase-char not-completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='number-char not-completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='special-char completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='8-char not-completed']")).isDisplayed());
+		
+		
+		driver.findElement(PasswordTC4).clear();
+		driver.findElement(PasswordTC4).sendKeys("123A6&3#$");
+		sleepInSecond(3);
+		
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='lowercase-char not-completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='uppercase-char completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='number-char completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='special-char completed']")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//li[@class='8-char completed']")).isDisplayed());
+
+		
+		
+		driver.findElement(PasswordTC4).clear();
+		driver.findElement(PasswordTC4).sendKeys("123A6&3#$ab");
+		sleepInSecond(3);
+		
+		Assert.assertFalse(driver.findElement(By.xpath("//li[@class='lowercase-char completed']")).isDisplayed());
+		Assert.assertFalse(driver.findElement(By.xpath("//li[@class='uppercase-char completed']")).isDisplayed());
+		Assert.assertFalse(driver.findElement(By.xpath("//li[@class='number-char completed']")).isDisplayed());
+		Assert.assertFalse(driver.findElement(By.xpath("//li[@class='special-char completed']")).isDisplayed());
+		Assert.assertFalse(driver.findElement(By.xpath("//li[@class='8-char completed']")).isDisplayed());
 		
 	}
 	
