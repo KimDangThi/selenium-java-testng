@@ -28,6 +28,10 @@ public class Topic_05_Random {
 		
 		
 		
+		String.valueOf(false) convert kiểu dữ liệu số nguyên sang string
+		
+		
+		
 		
 		
 		

@@ -16,7 +16,7 @@ public class Topic_07_Textbox_TextArea {
 	Random rand;
 	String projectPath = System.getProperty("user.dir");
 	String osName = System.getProperty("os.name");
-	String fullname, Firstname, lastname, emailaddress, password, confirmpassword;
+	String fullname, Firstname, lastname, emailaddress, password, confirmpassword, EmployeeId;
 	
 	@BeforeClass
 	public void beforeClass() {
@@ -36,7 +36,7 @@ public class Topic_07_Textbox_TextArea {
 		fullname = Firstname + " " + lastname;
 		password = "abc12345";
 		emailaddress = "automation" + rand.nextInt(9999) + "@gmail.com";
-		
+		EmployeeId = String.valueOf(rand.nextInt(99999));
 	}
 
 	//@Test
@@ -75,21 +75,27 @@ public class Topic_07_Textbox_TextArea {
 	public void TC_02_() {
 		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
 		
-		driver.findElement(By.xpath("//input[@name='username']")).sendKeys("Admin");
-		driver.findElement(By.xpath("//input[@name='password']")).sendKeys("admin123");
+		driver.findElement(By.name("username")).sendKeys("Admin");
+		driver.findElement(By.name("password")).sendKeys("admin123");
 		driver.findElement(By.xpath("//button[text()=' Login ']")).click();
-		driver.findElement(By.xpath("//span[text()='PIM']")).click();
-		driver.findElement(By.xpath("//a[text()='Add Employee']")).click();
-		driver.findElement(By.xpath("//input[@name='firstName']")).sendKeys(Firstname);
-		driver.findElement(By.xpath("//input[@name='lastName']")).sendKeys(lastname);
-		String EmployeeId = driver.findElement(By.xpath("//label[text()='Employee Id']/parent::div/following-sibling::div/input")).getText();
+		sleepInSecond(5);
 		
-		driver.findElement(By.xpath("//p[text()='Create Login Details']/parent::div//span")).click();
+		driver.findElement(By.xpath("//span[text()='PIM']")).click();
+		sleepInSecond(2);
+		
+		driver.findElement(By.xpath("//a[text()='Add Employee']")).click();
 		sleepInSecond(3);
 		
-		driver.findElement(By.xpath("//label[text()='Username']/parent::div/following-sibling::div/input[@class='oxd-input oxd-input--active']")).sendKeys("User1");
-		driver.findElement(By.xpath("//label[text()='Password']/parent::div/following-sibling::div/input[@type='password']")).sendKeys(password);
-		driver.findElement(By.xpath("//label[text()='Confirm Password']/parent::div/following-sibling::div/input[@type='password']")).sendKeys(password);
+		driver.findElement(By.name("firstName")).sendKeys(Firstname);
+		driver.findElement(By.name("lastName")).sendKeys(lastname);
+		
+		//driver.findElement(By.xpath("//label[text()='Employee Id']/parent::div/following-sibling::div/span")).sendKeys(EmployeeId);
+		
+		driver.findElement(By.xpath("//p[text()='Create Login Details']/parent::div//input")).click();
+		
+		driver.findElement(By.xpath("//label[text()='Username']/parent::div/following-sibling::div/input")).sendKeys("User1"+EmployeeId);
+		driver.findElement(By.xpath("//label[text()='Password']/parent::div/following-sibling::div/input")).sendKeys(password);
+		driver.findElement(By.xpath("//label[text()='Confirm Password']/parent::div/following-sibling::div/input")).sendKeys(password);
 		
 		driver.findElement(By.xpath("//button[text()=' Save ']")).click();
 		
