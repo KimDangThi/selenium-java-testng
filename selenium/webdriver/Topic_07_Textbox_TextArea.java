@@ -1,5 +1,7 @@
 package webdriver;
 
+import static org.testng.Assert.assertEquals;
+
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -16,7 +18,7 @@ public class Topic_07_Textbox_TextArea {
 	Random rand;
 	String projectPath = System.getProperty("user.dir");
 	String osName = System.getProperty("os.name");
-	String fullname, Firstname, lastname, emailaddress, password, confirmpassword, EmployeeId;
+	String fullname, Firstname, lastname, emailaddress, password, confirmpassword, number, user;
 	
 	@BeforeClass
 	public void beforeClass() {
@@ -34,9 +36,10 @@ public class Topic_07_Textbox_TextArea {
 		Firstname = "Kim";
 		lastname = "DangThi";
 		fullname = Firstname + " " + lastname;
+		user = "user12";
 		password = "abc12345";
 		emailaddress = "automation" + rand.nextInt(9999) + "@gmail.com";
-		EmployeeId = String.valueOf(rand.nextInt(99999));
+		number = String.valueOf(rand.nextInt(99999999));
 	}
 
 	//@Test
@@ -85,25 +88,55 @@ public class Topic_07_Textbox_TextArea {
 		
 		driver.findElement(By.xpath("//a[text()='Add Employee']")).click();
 		sleepInSecond(3);
-		
+		//step5
 		driver.findElement(By.name("firstName")).sendKeys(Firstname);
 		driver.findElement(By.name("lastName")).sendKeys(lastname);
 		
-		//driver.findElement(By.xpath("//label[text()='Employee Id']/parent::div/following-sibling::div/span")).sendKeys(EmployeeId);
+		String EmployeeId = driver.findElement(By.xpath("//label[text()='Employee Id']//parent::div/following-sibling::div/input")).getAttribute("value");
 		
-		driver.findElement(By.xpath("//p[text()='Create Login Details']/parent::div//input")).click();
+		driver.findElement(By.xpath("//p[text()='Create Login Details']/following-sibling::div//span")).click();
 		
-		driver.findElement(By.xpath("//label[text()='Username']/parent::div/following-sibling::div/input")).sendKeys("User1"+EmployeeId);
+		driver.findElement(By.xpath("//label[text()='Username']/parent::div/following-sibling::div/input")).sendKeys(user);
 		driver.findElement(By.xpath("//label[text()='Password']/parent::div/following-sibling::div/input")).sendKeys(password);
 		driver.findElement(By.xpath("//label[text()='Confirm Password']/parent::div/following-sibling::div/input")).sendKeys(password);
 		
 		driver.findElement(By.xpath("//button[text()=' Save ']")).click();
+		//step7 -verify firstname, lastname, emmployID
+		Assert.assertEquals(driver.findElement(By.name("firstName")).getAttribute("value"), Firstname);
+		Assert.assertEquals(driver.findElement(By.name("lastName")).getAttribute("value"), lastname);
+		Assert.assertEquals(driver.findElement(By.xpath("//label[text()='Employee Id']/parent::div/following-sibling::div/input")).getAttribute("value"),EmployeeId);
+		//step8
+		driver.findElement(By.xpath("//a[text()='Immigration']")).click();
+		sleepInSecond(5);
 		
-		Assert.assertEquals(driver.findElement(By.name("firstName")).getText(), Firstname);
-		Assert.assertEquals(driver.findElement(By.name("lastName")).getText(), lastname);
-		//step7
-		Assert.assertEquals(driver.findElement(By.xpath("//label[text()='Employee Id']/parent::div/following-sibling::div/input")).getText(),EmployeeId);
+		driver.findElement(By.xpath("//h6[text()='Assigned Immigration Records']/following-sibling::button")).click();
 		
+		driver.findElement(By.xpath("//label[text()='Number']/parent::div/following-sibling::div/input")).sendKeys(number);
+		driver.findElement(By.xpath("//label[text()='Comments']/parent::div/following-sibling::div/textarea")).sendKeys("My name's Kim\n Dang");
+		driver.findElement(By.xpath("//button[text()=' Save ']")).click();
+		
+		//step11
+		driver.findElement(By.xpath("//i[@class='oxd-icon bi-pencil-fill']")).click();
+		
+		//step12- verify number, comment
+		Assert.assertEquals(driver.findElement(By.xpath("//label[text()='Number']/parent::div/following-sibling::div/input")).getAttribute("value"), number);
+		Assert.assertEquals(driver.findElement(By.xpath("//label[text()='Comments']/parent::div/following-sibling::div/textarea")).getAttribute("value"), "My name's Kim\n Dang");
+		
+		//step14 logout
+		driver.findElement(By.cssSelector("p.oxd-userdropdown-name")).click();
+		driver.findElement(By.xpath("//a[text()='Logout']")).click();
+		sleepInSecond(2);
+		
+		//step 15 nhập lại thông tin ở step5
+		driver.findElement(By.name("username")).sendKeys(user);
+		driver.findElement(By.name("password")).sendKeys(password);
+		driver.findElement(By.xpath("//button[text()=' Login ']")).click();
+		sleepInSecond(5);
+		
+		//step 16 vào màn hình My Info
+		//step 17 verify firstname, lastname
+		//step 18 vaof màn hình immigration, chọn edit
+		//step 19 verìy lại  number và comment
 	}
 
 	@Test
@@ -120,6 +153,6 @@ public class Topic_07_Textbox_TextArea {
 	}
 	@AfterClass
 	public void afterClass() {
-		driver.quit();
+		//driver.quit();
 	}
 }
