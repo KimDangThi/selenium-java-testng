@@ -38,23 +38,57 @@ public class Topic_09_CustomDropdown {
 		driver.get("http://jqueryui.com/resources/demos/selectmenu/default.html");
 		
 		SelectDroplist("span#speed-button", "ul#speed-menu div[role=\"option\"]", "Medium");
-		sleepInSecond(5);
+		sleepInSecond(3);
 		Assert.assertEquals(driver.findElement(By.cssSelector("span#speed-button span.ui-selectmenu-text")).getText(), "Medium");
 
 		SelectDroplist("span#speed-button", "ul#speed-menu div[role=\"option\"]", "Slower");
-		sleepInSecond(5);
+		sleepInSecond(3);
 		Assert.assertEquals(driver.findElement(By.cssSelector("span#speed-button span.ui-selectmenu-text")).getText(), "Slower");
 		
 		SelectDroplist("span#speed-button", "ul#speed-menu div[role=\"option\"]", "Faster");
-		sleepInSecond(5);
+		sleepInSecond(3);
 		Assert.assertEquals(driver.findElement(By.cssSelector("span#speed-button span.ui-selectmenu-text")).getText(), "Faster");
-		
 	}
 	
 	@Test
-	public void TC_02() {
+	public void TC_02_ReactJS() {
+		driver.get("https://react.semantic-ui.com/maximize/dropdown-example-selection/");
+		
+		SelectDroplist("div[role=\"listbox\"]", "span.text", "Elliot Fu");
+		sleepInSecond(3);
+		Assert.assertEquals(driver.findElement(By.cssSelector("div[role=\"listbox\"] div")).getText(), "Elliot Fu");
+
+		SelectDroplist("div[role=\"listbox\"]", "span.text", "Matt");
+		sleepInSecond(3);
+		Assert.assertEquals(driver.findElement(By.cssSelector("div[role=\"listbox\"] div")).getText(), "Matt");
 	}
 
+	@Test
+	public void TC_03_VueJS() {
+		driver.get("https://mikerodham.github.io/vue-dropdowns/");
+		
+		SelectDroplist("div.btn-group", "ul.dropdown-menu a", "Second Option");
+		sleepInSecond(3);
+		Assert.assertEquals(driver.findElement(By.cssSelector("div.btn-group>li")).getText().trim(), "Second Option");
+
+		SelectDroplist("div.btn-group", "ul.dropdown-menu a", "First Option");
+		sleepInSecond(3);
+		Assert.assertEquals(driver.findElement(By.cssSelector("div.btn-group>li")).getText().trim(), "First Option");
+	}
+	
+	@Test
+	public void TC_04_Editable() {
+		driver.get("https://react.semantic-ui.com/maximize/dropdown-example-search-selection/");
+		
+		SelectDroplist("input.search", "div[role=\"option\"] span", "Angola");
+		sleepInSecond(3);
+		Assert.assertEquals(driver.findElement(By.cssSelector("div[aria-atomic=\"true\"]")).getText(), "Angola");
+
+		SelectDroplist("input.search", "div[role=\"option\"] span", "Bangladesh");
+		sleepInSecond(3);
+		Assert.assertEquals(driver.findElement(By.cssSelector("div[aria-atomic=\"true\"]")).getText(), "Bangladesh");
+	}
+	
 	public void SelectDroplist(String parentList, String item, String ExpectedText) {
 	
 		driver.findElement(By.cssSelector(parentList)).click();
@@ -70,6 +104,25 @@ public class Topic_09_CustomDropdown {
 		}
 	}
 
+	public void EditableDroplist(String parentList, String item, String ExpectedText) {
+		
+		driver.findElement(By.cssSelector(parentList)).clear();
+		driver.findElement(By.cssSelector(parentList)).click();
+		explicitWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(parentList)));
+		
+		driver.findElement(By.cssSelector(parentList)).sendKeys("ang");
+		explicitWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(parentList)));
+		
+		List<WebElement> SpeedDropdownlist =driver.findElements(By.cssSelector(item));
+		for (WebElement temptItem : SpeedDropdownlist) {
+			String itemText = temptItem.getText();
+			if (itemText.equals(ExpectedText)){
+				temptItem.click();
+			}
+			
+		}
+	}
+	
 	public void sleepInSecond(long timeInSecond) {
 		try {
 			Thread.sleep(timeInSecond * 1000);
